@@ -14,14 +14,16 @@ def main():
                 key="diary", size=(85, 25), autoscroll=True, font=("Times", 12, "")
             )
         ],
+        [sg.StatusBar("Status information will be here")],
         [sg.Button("Datestamp"), sg.Button("Horizontal line"), sg.Button("Save")],
     ]
 
     window = sg.Window(
-        "Diary", layout, return_keyboard_events=True, grab_anywhere=False,
+        "Diary", layout, return_keyboard_events=True, grab_anywhere=True,
     )
 
-    diary = window.FindElement("diary")
+    #    diary = window.FindElement("diary")
+    diary = window["diary"]
 
     while True:
         event, values = window.read()
@@ -31,11 +33,13 @@ def main():
             now = datetime.datetime.now()
             spacer = "=" * 6
             stamp = (
-                "\n" + spacer + " [ " + now.strftime("%X %x") + " ] " + spacer + "\n"
+                "\n" + spacer + " [ " + now.strftime("%x %X") + " ] " + spacer + "\n"
             )
             diary.update(value=stamp, append=True)
         if event == "Horizontal line":
-            diary.update(value=("\n" + "-" * 30 + "\n"), append=True)
+            diary.update(value=("\n" + "_" * 80 + "\n"), append=True)
+        if event == "Save":
+            continue
 
     window.close()
 
