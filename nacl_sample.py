@@ -1,7 +1,7 @@
 from nacl import pwhash, secret, utils
 
 
-password = b'password shared between Alice and Bob'
+password = b"password shared between Alice and Bob"
 message = b"This is a message for Bob's eyes only"
 
 kdf = pwhash.argon2i.kdf
@@ -15,8 +15,7 @@ mem = pwhash.argon2i.MEMLIMIT_SENSITIVE
 # ops = pwhash.scrypt.OPSLIMIT_SENSITIVE
 # mem = pwhash.scrypt.MEMLIMIT_SENSITIVE
 
-Alices_key = kdf(secret.SecretBox.KEY_SIZE, password, salt,
-                 opslimit=ops, memlimit=mem)
+Alices_key = kdf(secret.SecretBox.KEY_SIZE, password, salt, opslimit=ops, memlimit=mem)
 Alices_box = secret.SecretBox(Alices_key)
 nonce = utils.random(secret.SecretBox.NONCE_SIZE)
 
@@ -28,8 +27,7 @@ encrypted = Alices_box.encrypt(message, nonce)
 # Bob is able to derive the correct key to decrypt the message
 
 
-Bobs_key = kdf(secret.SecretBox.KEY_SIZE, password, salt,
-               opslimit=ops, memlimit=mem)
+Bobs_key = kdf(secret.SecretBox.KEY_SIZE, password, salt, opslimit=ops, memlimit=mem)
 Bobs_box = secret.SecretBox(Bobs_key)
 received = Bobs_box.decrypt(encrypted)
-print(received.decode('utf-8'))
+print(received.decode("utf-8"))
