@@ -1,10 +1,6 @@
 import datetime
 
-# import nacl
-# import dropbox
 import PySimpleGUI as sg
-
-# import pprint
 
 
 def main():
@@ -21,27 +17,21 @@ def main():
     ]
 
     window = sg.Window(
-        "Diary", layout, return_keyboard_events=True, grab_anywhere=True,
+        "Diary", layout, grab_anywhere=True,
     )
 
-    #    diary = window.FindElement("diary")
     diary = window["diary"]
 
     while True:
         event, values = window.read()
-        if event in (None, "Cancel"):
+        if event in (sg.WIN_CLOSED, "Cancel"):
             break
-        if event == "Datestamp":
+        elif event == "Datestamp":
             now = datetime.datetime.now()
-            spacer = "=" * 6
-            stamp = (
-                "\n" + spacer + " [ " + now.strftime("%x %X") + " ] " + spacer + "\n"
-            )
+            stamp = f"\n{'=' * 6} [ {now.strftime('%Y-%m-%d %H:%M:%S')} ] {'=' * 6}\n"
             diary.update(value=stamp, append=True)
-        if event == "Horizontal line":
-            diary.update(value=("\n" + "_" * 80 + "\n"), append=True)
-        if event == "Save":
-            continue
+        elif event == "Horizontal line":
+            diary.update(value="\n" + "_" * 80 + "\n", append=True)
 
     window.close()
 
